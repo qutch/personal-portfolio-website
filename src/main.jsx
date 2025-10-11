@@ -1,10 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { IntroSection } from './Hero'
+import { HeroSection } from './Hero'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <IntroSection />
+    <HeroSection />
+    <div className="h-100"/>
   </StrictMode>,
 )
