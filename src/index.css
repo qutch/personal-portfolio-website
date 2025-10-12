@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import "tailwindcss";
 
 @theme {
   --font-unbounded: "Unbounded", sans-serif;
   --font-mono-display: "Major Mono Display", monospace;
+  --font-urbanist: "Urbanist", sans-serif;
   --color-cream: #F5EED6;
   --color-custom-gray: #D7DEDB;
   --color-accent-orange: #DB5239;
@@ -16,4 +18,12 @@
 
 body {
   background-color: #0c0c0c;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+  scroll-behavior: smooth;
 }

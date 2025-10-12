@@ -1,22 +1,26 @@
 // Import Logos
-import Logo from "./assets/personal_logo.svg?react";
 import { FaItchIo } from "react-icons/fa";
 import { FaGithubSquare } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 
+
+const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+        if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+    }
+};
 export function HeroSection() {
     return (
         <div>
-            <div className="p-5">
-                    <Logo className="w-10 h-10 hover:scale-120 transition duration-300 ease-in-out" />
-            </div>
-            <div className="h-[5vh]" />
             <div className="flex flex-row justify-between">
                 <IntroSection />
                 <NavSection />
             </div>
             <div className="flex justify-center">
-                <DownArrow />
+                <div onClick={() => scrollToSection("about")}>
+                    <DownArrow />
+                </div>
             </div>
         </div>
     )
@@ -36,11 +40,11 @@ function IntroSection() {
                 </div>
 
                 <div className="px-15 pt-5 pb-2">
-                    <h1 className="font-mono-display text-2xl text-custom-gray">student • developer • photographer</h1>
+                    <h1 className="font-mono-display text-2xl text-custom-gray">student • developer</h1>
                 </div>
 
                 <div className="px-15">
-                    <div className="w-160 h-0.5 bg-accent-orange" />
+                    <div className="w-100 h-0.5 bg-accent-orange" />
                 </div>
 
                 {/* Logo Section */}
@@ -68,19 +72,19 @@ function NavSection() {
     const navNumStyle = "font-unbounded text-3xl font-[700] text-custom-gray px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"
 
     return (
-        <div className="w-[20vw] min-w-max">
+        <div className="w-[20vw] min-w-max hover:cursor-default">
 
-            <div className={navGroupStyle}>
-                <h1 className={navTitleStyle}>about me</h1>
-                <h1 className={navNumStyle}> 01</h1>
+            <div className={navGroupStyle} onClick={() => scrollToSection("about")}>
+                    <h1 className={navTitleStyle}>about me</h1>
+                    <h1 className={navNumStyle}> 01</h1>
             </div>
 
-            <div className={navGroupStyle}>
+            <div className={navGroupStyle} onClick={() => scrollToSection("projects")}>
                 <h1 className={navTitleStyle}>my work</h1>
                 <h1 className={navNumStyle}> 02</h1>
             </div>
 
-            <div className={navGroupStyle}>
+            <div className={navGroupStyle} onClick={() => scrollToSection("contact")}>
                 <h1 className={navTitleStyle}>contact</h1>
                 <h1 className={navNumStyle}> 03</h1>
             </div>

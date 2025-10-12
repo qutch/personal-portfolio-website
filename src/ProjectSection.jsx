@@ -6,7 +6,7 @@ import { SiGodotengine } from "react-icons/si";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll } from "framer-motion";
+import { useScroll } from "framer-motion";
 
 // Import images and videos
 import image1 from "./assets/image1.jpg"
@@ -16,12 +16,14 @@ import image3 from "./assets/image3.jpg"
 import astroRaider from "./assets/astro_raider.jpg"
 import verletDemo from "./assets/verlet_demo.mp4"
 
+
+
 export function ProjectSection() {
 
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start end", "end start"],
+        offset: ["start 0.6", "end start"],
     });
 
     const projects = {
@@ -41,19 +43,27 @@ export function ProjectSection() {
             descriptions: [
                 "2D particle physics simulating using Verlet Integration",
                 "Used PyGame for rendering.",
-            ]
-        }
+            ],
+            link: "https://github.com/qutch/Verlet",
+        },
     }
 
+    const projectCount = Object.keys(projects).length;
+
     return (
-        <div ref={ref} className="flex flex-row justify-around">
-            <div className="flex flex-col space-y-10">
-                {Object.entries(projects).map(([key, project]) => (
-                    <ProjectCard key={key} title={project["title"]} logos={project["logos"]} descriptions={project["descriptions"]} link={project["link"]} />
-                ))}
+        <div>
+            <div className="px-20 py-10 bg-asphalt">
+                <h1 className="text-6xl text-custom-gray font-unbounded">My Work</h1>
             </div>
-            <div>
-                <ProjectImage scrollProgress={scrollYProgress}/>
+            <div ref={ref} className="flex flex-row justify-around py-10">
+                <div className="flex flex-col space-y-10">
+                    {Object.entries(projects).map(([key, project]) => (
+                        <ProjectCard key={key} title={project["title"]} logos={project["logos"]} descriptions={project["descriptions"]} link={project["link"]} />
+                    ))}
+                </div>
+                <div>
+                    <ProjectImage scrollProgress={scrollYProgress} projectCount={projectCount}/>
+                </div>
             </div>
         </div>
     )
@@ -88,9 +98,12 @@ function ProjectCard({title, logos, descriptions, link}) {
                 {/* Project Description */}
                 <div className="py-10 px-3">
                     {descriptions.map((desc, index) => (
-                        <p key={index} className="font-unbounded font-[100] text-xl text-custom-gray">
-                            {desc}
-                        </p>
+                        <>
+                            <p key={index} className="font-urbanist font-[200] text-2xl text-custom-gray py-5">
+                                {desc}
+                            </p>
+                            <div className="h-0.5 w-[70%] bg-cream"/>
+                        </>
                     ))}
                 </div>
 
@@ -104,7 +117,7 @@ function ProjectCard({title, logos, descriptions, link}) {
     )
 }
 
-function ProjectImage({scrollProgress}) {
+function ProjectImage({scrollProgress, projectCount}) {
 
     const [currentProgress, setCurrentProgress] = useState(0);
 
@@ -114,27 +127,46 @@ function ProjectImage({scrollProgress}) {
         });
         
         return () => unsubscribe();
-    }, [scrollProgress]); s
+    }, [scrollProgress]);
+
+    const media = [
+        { type: 'image', src: astroRaider },
+        { type: 'video', src: verletDemo },
+    ]
+
+    const getOpacity = (index) => {
+        const segmentSize = 1 / projectCount;
+        const start = index * segmentSize;
+        const end = (index + 1) * segmentSize;
+        
+        // Fade in when entering the segment, fade out when leaving
+        if (currentProgress >= start && currentProgress < end) {
+            return 1;
+        }
+        return 0;
+    };
 
     return (
-        <div className="py-10 px-20 top-25 sticky">
-            <div className="relative w-[800px] h-[600px] rounded-xl overflow-hidden">
-                <img
-                    src={astroRaider}
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in" 
-                    style={{ opacity: currentProgress < 0.4 ? 1 : 0}}
-                />
-                <video
-                    src={verletDemo}
-                    autoPlay loop muted playsInLine
-                    className="absolute inset-0 max-w-full max-h-full object-cover transition-opacity duration-300 ease-in"
-                    style={{ opacity: currentProgress >= 0.4 && currentProgress < 0.7 ? 1 : 0}}
-                />
-                <img
-                    src={image3}
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ease-in"
-                    style={{ opacity: currentProgress >= 0.7 ? 1 : 0 }}
-                />
+        <div className="py-10 px-20 top-0 sticky">
+            <div className="relative w-[800px] h-[600px] rounded-xl overflow-hidden border-2 border-green-400">
+                {media.map((item,index) => (
+                    item.type === 'video' ? (
+                        <video
+                            key={index}
+                            src={item.src}
+                            autoPlay loop muted playsInline
+                            className="absolute max-w-full max-h-full object-cover transition-opacity duration-300 ease-in"
+                            style={{ opacity: getOpacity(index) }}
+                        />
+                    ) : (
+                        <img
+                            key={index}
+                            src={item.src}
+                            className="absolute w-full h-full object-cover transition-opacity duration-300 ease-in"
+                            style={{ opacity: getOpacity(index) }}
+                        />
+                    )
+                ))}
             </div>
         </div>
     )
