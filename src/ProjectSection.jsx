@@ -148,7 +148,7 @@ function ProjectImage({scrollProgress, projectCount}) {
 
     return (
         <div className="py-10 px-20 top-0 sticky">
-            <div className="relative w-[800px] h-[600px] rounded-xl overflow-hidden border-2 border-green-400">
+            <div className="relative w-[800px] h-[600px] rounded-xl overflow-hidden">
                 {media.map((item,index) => (
                     item.type === 'video' ? (
                         <video
