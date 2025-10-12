@@ -1,4 +1,8 @@
+// Import Logos
 import Logo from "./assets/personal_logo.svg?react";
+import { FaItchIo } from "react-icons/fa";
+import { FaGithubSquare } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
 
 export function HeroSection() {
     return (
@@ -19,6 +23,9 @@ export function HeroSection() {
 }
 
 function IntroSection() {
+
+    const logoStyle = "text-cream w-15 h-auto hover:text-accent-orange hover:scale-120 transition duration-200 ease-in-out"
+
     return (
         <div className="h-[60vh]">
             <div>
@@ -36,28 +43,46 @@ function IntroSection() {
                     <div className="w-160 h-0.5 bg-accent-orange" />
                 </div>
 
+                {/* Logo Section */}
+                <div className="flex flex-row h-auto px-15 py-5 space-x-5">
+                    <a href="https://github.com/qutch" target="_blank">
+                        <FaGithubSquare className={logoStyle} />
+                    </a>
+                    <a href="https://www.linkedin.com/in/hutch-turner/" target="_blank">
+                        <FaLinkedin className={logoStyle} />
+                    </a>
+                    <a href="https://htquartz.itch.io/" target="_blank">
+                        <FaItchIo className={logoStyle} />
+                    </a>
+                </div>
+
             </div>
         </div>
     )
 }
 
 function NavSection() {
+    
+    const navGroupStyle = "group flex flex-row justify-between py-5 px-10 hover:bg-cream hover:scale-110 transition duration-100 ease-in-out"
+    const navTitleStyle = "font-mono-display text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-100 ease-in-out"
+    const navNumStyle = "font-unbounded text-3xl font-[700] text-custom-gray px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"
+
     return (
         <div className="w-[20vw] min-w-max">
 
-            <div className="group flex flex-row justify-between py-5 px-10 hover:bg-cream hover:scale-110 transition duration-100 ease-in-out">
-                <h1 className="font-mono-display text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-100 ease-in-out">about me</h1>
-                <h1 className="font-unbounded text-3xl font-[700] text-custom-gray px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"> 01</h1>
+            <div className={navGroupStyle}>
+                <h1 className={navTitleStyle}>about me</h1>
+                <h1 className={navNumStyle}> 01</h1>
             </div>
 
-            <div className="group flex flex-row justify-between py-5 px-10 hover:bg-cream hover:scale-110 transition duration-100 ease-in-out">
-                <h1 className="font-mono-display text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-100 ease-in-out">my work</h1>
-                <h1 className="font-unbounded text-3xl font-[700] text-custom-gray px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"> 02</h1>
+            <div className={navGroupStyle}>
+                <h1 className={navTitleStyle}>my work</h1>
+                <h1 className={navNumStyle}> 02</h1>
             </div>
 
-            <div className="group flex flex-row justify-between py-5 px-10 hover:bg-cream hover:scale-110 transition duration-100 ease-in-out">
-                <h1 className="font-mono-display text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-100 ease-in-out">contact</h1>
-                <h1 className="font-unbounded text-3xl font-[700] text-custom-gray px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"> 03</h1>
+            <div className={navGroupStyle}>
+                <h1 className={navTitleStyle}>contact</h1>
+                <h1 className={navNumStyle}> 03</h1>
             </div>
 
         </div>
