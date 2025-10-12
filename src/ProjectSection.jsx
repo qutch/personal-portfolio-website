@@ -8,11 +8,6 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useRef, useState, useEffect } from "react";
 import { useScroll } from "framer-motion";
 
-// Import images and videos
-import image1 from "./assets/image1.jpg"
-import image2 from "./assets/image2.jpg"
-import image3 from "./assets/image3.jpg"
-
 import astroRaider from "./assets/astro_raider.jpg"
 import verletDemo from "./assets/verlet_demo.mp4"
 
