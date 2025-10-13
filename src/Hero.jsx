@@ -10,14 +10,15 @@ const scrollToSection = (id) => {
         section.scrollIntoView({ behavior: "smooth" });
     }
 };
+
 export function HeroSection() {
     return (
         <div>
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-col lg:flex-row lg:justify-between">
                 <IntroSection />
                 <NavSection />
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-8 lg:mt-0">
                 <div onClick={() => scrollToSection("about")}>
                     <DownArrow />
                 </div>
@@ -28,27 +29,27 @@ export function HeroSection() {
 
 function IntroSection() {
 
-    const logoStyle = "text-cream w-15 h-auto hover:text-accent-orange hover:scale-120 transition duration-200 ease-in-out"
+    const logoStyle = "text-cream w-12 h-auto md:w-15 hover:text-accent-orange hover:scale-110 lg:hover:scale-120 transition duration-200 ease-in-out"
 
     return (
-        <div className="h-[60vh]">
+        <div className="min-h-[40vh] lg:h-[60vh] py-8 lg:py-0">
             <div>
 
-                <div className="px-15">
-                    <h1 className="font-unbounded text-8xl font-[100] text-custom-gray">Hey! I'm</h1>
-                    <h1 className="font-unbounded text-8xl font-[400] text-cream">Hutch Turner</h1>
+                <div className="px-6 md:px-10 lg:px-15">
+                    <h1 className="font-unbounded text-4xl md:text-6xl lg:text-8xl font-[100] text-custom-gray">Hey! I'm</h1>
+                    <h1 className="font-unbounded text-4xl md:text-6xl lg:text-8xl font-[400] text-cream">Hutch Turner</h1>
                 </div>
 
-                <div className="px-15 pt-5 pb-2">
-                    <h1 className="font-mono-display text-2xl text-custom-gray">student • developer</h1>
+                <div className="px-6 md:px-10 lg:px-15 pt-3 md:pt-4 lg:pt-5 pb-2">
+                    <h1 className="font-mono-display text-lg md:text-xl lg:text-2xl text-custom-gray">student • developer</h1>
                 </div>
 
-                <div className="px-15">
-                    <div className="w-100 h-0.5 bg-accent-orange" />
+                <div className="px-6 md:px-10 lg:px-15">
+                    <div className="w-full max-w-[400px] lg:w-100 h-0.5 bg-accent-orange" />
                 </div>
 
                 {/* Logo Section */}
-                <div className="flex flex-row h-auto px-15 py-5 space-x-5">
+                <div className="flex flex-row h-auto px-6 md:px-10 lg:px-15 py-4 lg:py-5 space-x-4 md:space-x-5">
                     <a href="https://github.com/qutch" target="_blank">
                         <FaGithubSquare className={logoStyle} />
                     </a>
@@ -67,12 +68,12 @@ function IntroSection() {
 
 function NavSection() {
     
-    const navGroupStyle = "group flex flex-row justify-between py-5 px-10 hover:bg-cream hover:scale-110 transition duration-100 ease-in-out"
-    const navTitleStyle = "font-mono-display text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-100 ease-in-out"
-    const navNumStyle = "font-unbounded text-3xl font-[700] text-custom-gray px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"
+    const navGroupStyle = "group flex flex-row justify-between py-3 px-6 md:py-4 md:px-8 lg:py-5 lg:px-10 hover:bg-cream hover:scale-105 lg:hover:scale-110 transition duration-100 ease-in-out"
+    const navTitleStyle = "font-mono-display text-xl md:text-2xl lg:text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-100 ease-in-out"
+    const navNumStyle = "font-unbounded text-xl md:text-2xl lg:text-3xl font-[700] text-custom-gray px-3 md:px-4 lg:px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"
 
     return (
-        <div className="w-[20vw] min-w-max hover:cursor-default">
+        <div className="w-full lg:w-[20vw] lg:min-w-max hover:cursor-default px-4 lg:px-0">
 
             <div className={navGroupStyle} onClick={() => scrollToSection("about")}>
                     <h1 className={navTitleStyle}>about me</h1>
@@ -95,8 +96,8 @@ function NavSection() {
 
 function DownArrow() {
     return (
-        <div className="hover:scale-110 transition duration-200 ease-in-out">
-            <svg width="116" height="141" viewBox="0 0 116 141" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="hover:scale-110 transition duration-200 ease-in-out cursor-pointer">
+            <svg className="w-20 h-24 md:w-24 md:h-28 lg:w-[116px] lg:h-[141px]" viewBox="0 0 116 141" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M67.6667 9.67647C67.6667 15.0206 63.3388 19.3529 58 19.3529C52.6612 19.3529 48.3333 15.0206 48.3333 9.67647C48.3333 4.3323 52.6612 0 58 0C63.3388 0 67.6667 4.3323 67.6667 9.67647Z" fill="#D9D9D9"/>
                 <path d="M67.6667 40.0882C67.6667 45.4324 63.3388 49.7647 58 49.7647C52.6612 49.7647 48.3333 45.4324 48.3333 40.0882C48.3333 34.7441 52.6612 30.4118 58 30.4118C63.3388 30.4118 67.6667 34.7441 67.6667 40.0882Z" fill="#D9D9D9"/>
                 <path d="M67.6667 70.5C67.6667 75.8442 63.3388 80.1765 58 80.1765C52.6612 80.1765 48.3333 75.8442 48.3333 70.5C48.3333 65.1558 52.6612 60.8235 58 60.8235C63.3388 60.8235 67.6667 65.1558 67.6667 70.5Z" fill="#D9D9D9"/>
