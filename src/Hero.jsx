@@ -29,7 +29,7 @@ export function HeroSection() {
 
 function IntroSection() {
 
-    const logoStyle = "text-cream w-12 h-auto md:w-15 hover:text-accent-orange hover:scale-110 lg:hover:scale-120 transition duration-200 ease-in-out"
+    const logoStyle = "text-cream w-12 h-auto md:w-15 hover:text-accent-orange transition duration-200 ease-out"
 
     return (
         <div className="min-h-[40vh] lg:h-[60vh] py-8 lg:py-0">
@@ -68,9 +68,9 @@ function IntroSection() {
 
 function NavSection() {
     
-    const navGroupStyle = "group flex flex-row justify-between py-3 px-6 md:py-4 md:px-8 lg:py-5 lg:px-10 hover:bg-cream hover:scale-105 lg:hover:scale-110 transition duration-100 ease-in-out"
-    const navTitleStyle = "font-mono-display text-xl md:text-2xl lg:text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-100 ease-in-out"
-    const navNumStyle = "font-unbounded text-xl md:text-2xl lg:text-3xl font-[700] text-custom-gray px-3 md:px-4 lg:px-5 group-hover:text-accent-orange transition duration-100 ease-in-out"
+    const navGroupStyle = "group flex flex-row justify-between py-3 px-6 md:py-4 md:px-8 lg:py-5 lg:px-10 hover:bg-cream transition duration-200 ease-out"
+    const navTitleStyle = "font-mono-display text-xl md:text-2xl lg:text-3xl text-custom-gray group-hover:text-obsidian group-hover:font-black transition duration-200 ease-out"
+    const navNumStyle = "font-unbounded text-xl md:text-2xl lg:text-3xl font-[700] text-custom-gray px-3 md:px-4 lg:px-5 group-hover:text-accent-orange transition duration-200 ease-out"
 
     return (
         <div className="w-full lg:w-[20vw] lg:min-w-max hover:cursor-default px-4 lg:px-0">
@@ -96,7 +96,7 @@ function NavSection() {
 
 function DownArrow() {
     return (
-        <div className="hover:scale-110 transition duration-200 ease-in-out cursor-pointer">
+        <div className="hover:opacity-70 transition duration-200 ease-out cursor-pointer">
             <svg className="w-20 h-24 md:w-24 md:h-28 lg:w-[116px] lg:h-[141px]" viewBox="0 0 116 141" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M67.6667 9.67647C67.6667 15.0206 63.3388 19.3529 58 19.3529C52.6612 19.3529 48.3333 15.0206 48.3333 9.67647C48.3333 4.3323 52.6612 0 58 0C63.3388 0 67.6667 4.3323 67.6667 9.67647Z" fill="#D9D9D9"/>
                 <path d="M67.6667 40.0882C67.6667 45.4324 63.3388 49.7647 58 49.7647C52.6612 49.7647 48.3333 45.4324 48.3333 40.0882C48.3333 34.7441 52.6612 30.4118 58 30.4118C63.3388 30.4118 67.6667 34.7441 67.6667 40.0882Z" fill="#D9D9D9"/>

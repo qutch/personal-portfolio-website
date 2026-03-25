@@ -1,4 +1,3 @@
-// Import logos
 import { RiFirebaseFill } from "react-icons/ri";
 import { GrSwift } from "react-icons/gr";
 import { SiPython } from "react-icons/si";
@@ -6,15 +5,17 @@ import { SiGodotengine } from "react-icons/si";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { useRef, useState, useEffect } from "react";
-import { useScroll } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 
 import astroRaider from "./assets/astro_raider.jpg"
 import verletDemo from "./assets/verlet_demo.mp4"
 
-
+const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+}
 
 export function ProjectSection() {
-
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -27,8 +28,8 @@ export function ProjectSection() {
             logos: [SiGodotengine],
             descriptions: [
                 "2D top-down space shooter. Play as a raider, blasting alien saucers.",
-                "Has a full game loop with 2D physics-based player movement, enemy AI, and real time event handling.",
-                "I designed all the art and wrote all the music from scratch",
+                "Full game loop with physics-based player movement, enemy AI, and real-time event handling.",
+                "All art designed and music composed from scratch.",
             ],
             link: "https://htquartz.itch.io/astro-raider",
             media: { type: 'image', src: astroRaider }
@@ -37,8 +38,8 @@ export function ProjectSection() {
             title: "verlet integration",
             logos: [SiPython],
             descriptions: [
-                "2D particle physics simulating using Verlet Integration",
-                "Used PyGame for rendering.",
+                "2D particle physics simulation using the Verlet Integration method.",
+                "Built with PyGame for rendering.",
             ],
             link: "https://github.com/qutch/Verlet",
             media: { type: 'video', src: verletDemo }
@@ -47,206 +48,212 @@ export function ProjectSection() {
 
     const projectCount = Object.keys(projects).length;
 
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    useEffect(() => {
+        const segmentSize = 1 / projectCount;
+        const unsubscribe = scrollYProgress.on("change", (latest) => {
+            const index = Math.min(
+                Math.floor(latest / segmentSize),
+                projectCount - 1
+            );
+            setActiveIndex(index);
+        });
+        return () => unsubscribe();
+    }, [scrollYProgress, projectCount]);
+
     return (
         <div>
             {/* Header */}
-            <div className="px-6 py-8 md:px-12 md:py-10 lg:px-20 bg-asphalt">
+            <motion.div
+                className="px-6 py-8 md:px-12 md:py-10 lg:px-20 bg-asphalt"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4 }}
+            >
                 <h1 className="text-3xl md:text-5xl lg:text-6xl text-custom-gray font-unbounded">My Work</h1>
-            </div>
+            </motion.div>
 
-            {/* Desktop Layout - Side by side */}
-            <div ref={ref} className="hidden lg:flex flex-row justify-around py-10">
-                <div className="flex flex-col space-y-10">
-                    {Object.entries(projects).map(([key, project]) => (
-                        <ProjectCard 
-                            key={key} 
-                            title={project["title"]} 
-                            logos={project["logos"]} 
-                            descriptions={project["descriptions"]} 
-                            link={project["link"]} 
-                        />
+            {/* Desktop Layout */}
+            <div ref={ref} className="hidden lg:flex flex-row justify-around py-10 gap-6">
+                <div className="flex flex-col gap-8 py-4">
+                    {Object.entries(projects).map(([key, project], i) => (
+                        <motion.div
+                            key={key}
+                            variants={fadeUp}
+                            initial="hidden"
+                            whileInView="show"
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.45, ease: "easeOut", delay: i * 0.1 }}
+                        >
+                            <ProjectCard
+                                title={project.title}
+                                logos={project.logos}
+                                descriptions={project.descriptions}
+                                link={project.link}
+                                isActive={activeIndex === i}
+                            />
+                        </motion.div>
                     ))}
                 </div>
                 <div>
-                    <ProjectImage scrollProgress={scrollYProgress} projectCount={projectCount} projects={projects}/>
+                    <ProjectImage scrollProgress={scrollYProgress} projectCount={projectCount} projects={projects} />
                 </div>
             </div>
 
-            {/* Mobile/Tablet Layout - Stacked with inline images */}
-            <div className="lg:hidden py-6 md:py-8">
-                <div className="flex flex-col space-y-8 md:space-y-12">
-                    {Object.entries(projects).map(([key, project]) => (
-                        <ProjectCardWithImage 
-                            key={key} 
-                            title={project["title"]} 
-                            logos={project["logos"]} 
-                            descriptions={project["descriptions"]} 
-                            link={project["link"]}
-                            media={project["media"]}
+            {/* Mobile/Tablet Layout */}
+            <div className="lg:hidden py-6 md:py-8 px-4 md:px-8 flex flex-col gap-10 md:gap-14">
+                {Object.entries(projects).map(([key, project], i) => (
+                    <motion.div
+                        key={key}
+                        variants={fadeUp}
+                        initial="hidden"
+                        whileInView="show"
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.45, ease: "easeOut", delay: i * 0.1 }}
+                    >
+                        <ProjectCardWithMedia
+                            title={project.title}
+                            logos={project.logos}
+                            descriptions={project.descriptions}
+                            link={project.link}
+                            media={project.media}
                         />
-                    ))}
-                </div>
+                    </motion.div>
+                ))}
             </div>
         </div>
     )
 }
 
 
-function ProjectCard({title, logos, descriptions, link}) {
-
-    const logoClass = "w-auto h-10 md:h-12 text-custom-gray hover:scale-110 hover:text-accent-orange transition duration-200 ease-in-out"
+function ProjectCard({ title, logos, descriptions, link, isActive = false }) {
+    const logoClass = "w-auto h-9 text-custom-gray hover:text-accent-orange transition duration-200 ease-out"
 
     return (
-        <div className="py-6 px-10 md:py-8 md:px-15 lg:py-10 lg:px-20">
-            <div className="
-            relative flex items-center flex-col p-4 md:p-5 min-w-auto max-w-[500px] h-auto min-h-[500px] md:min-h-[600px] lg:h-[700px]
-            bg-card border-2 border-accent-orange rounded-[10px] hover:scale-101 
-            transition duration-300 ease-in-out"
-            >
+        <div className={`
+            relative flex flex-col px-8 py-6 lg:px-10 lg:py-8
+            w-[460px] bg-card rounded-xl
+            border transition duration-300 ease-out
+            ${isActive ? "border-accent-orange" : "border-asphalt hover:border-accent-orange/60"}
+        `}>
+            {/* Title */}
+            <h2 className="font-mono-display text-accent-orange text-3xl lg:text-4xl mb-3">{title}</h2>
 
-                {/* Project Title */}
-                <h1 className="py-2 md:py-3 w-full max-w-fit md:w-110 text-center rounded-[10px] 
-                font-mono-display text-cream text-3xl md:text-4xl lg:text-5xl bg-asphalt"
-                >{title}
-                </h1>
+            {/* Logos */}
+            <div className="flex flex-row gap-4 mb-6">
+                {logos.map((Logo, index) => (
+                    <Logo key={index} className={logoClass} />
+                ))}
+            </div>
 
-                {/* Project Logos */}
-                <div className="flex flex-row space-x-4 md:space-x-5 pt-3">
-                    {logos.map((Logo, index) => (
-                        <Logo key={index} className={logoClass} />
-                    ))}
-                </div>
+            {/* Descriptions */}
+            <ul className="flex flex-col gap-3 flex-grow">
+                {descriptions.map((desc, index) => (
+                    <li key={index} className="flex gap-3 items-start">
+                        <span className="text-accent-orange mt-1 leading-none select-none">›</span>
+                        <p className="font-urbanist font-[200] text-lg lg:text-xl text-custom-gray leading-relaxed">
+                            {desc}
+                        </p>
+                    </li>
+                ))}
+            </ul>
 
-                {/* Project Description */}
-                <div className="py-6 md:py-8 lg:py-10 px-2 md:px-3 flex-grow">
-                    {descriptions.map((desc, index) => (
-                        <div key={index}>
-                            <p className="font-urbanist font-[200] text-lg md:text-xl lg:text-2xl text-custom-gray py-3 md:py-4 lg:py-5">
-                                {desc}
-                            </p>
-                            <div className="h-0.5 w-[70%] bg-cream"/>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Project Link */}
-                <a href={link} target="_blank" className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
-                    <FaExternalLinkAlt className="w-8 h-auto md:w-10 text-cream hover:scale-120 hover:text-accent-orange transition duration-200 ease-in-out" />
-                </a>
-
-            </div>   
+            {/* Link */}
+            <a href={link} target="_blank" className="mt-6 self-end">
+                <FaExternalLinkAlt className="w-6 h-auto text-cream hover:text-accent-orange transition duration-200 ease-out" />
+            </a>
         </div>
     )
 }
 
-function ProjectCardWithImage({title, logos, descriptions, link, media}) {
 
-    const logoClass = "w-auto h-10 md:h-12 text-custom-gray hover:scale-110 hover:text-accent-orange transition duration-200 ease-in-out"
+function ProjectCardWithMedia({ title, logos, descriptions, link, media }) {
+    const logoClass = "w-auto h-9 text-custom-gray hover:text-accent-orange transition duration-200 ease-out"
 
     return (
-        <div className="px-4 md:px-8">
-            {/* Project Image/Video */}
-            <div className="w-full max-w-2xl mx-auto mb-6 rounded-xl overflow-hidden">
+        <div className="flex flex-col max-w-2xl mx-auto">
+            {/* Media */}
+            <div className="w-full rounded-xl overflow-hidden mb-5">
                 {media.type === 'video' ? (
-                    <video
-                        src={media.src}
-                        autoPlay loop muted playsInline
-                        className="w-full h-auto object-cover"
-                    />
+                    <video src={media.src} autoPlay loop muted playsInline className="w-full h-auto object-cover" />
                 ) : (
-                    <img
-                        src={media.src}
-                        className="w-full h-auto object-cover"
-                        alt={title}
-                    />
+                    <img src={media.src} className="w-full h-auto object-cover" alt={title} />
                 )}
             </div>
 
-            {/* Project Card */}
+            {/* Card */}
             <div className="
-            relative flex items-center flex-col p-4 md:p-6 w-full max-w-2xl mx-auto min-h-[400px]
-            bg-card border-2 border-accent-orange rounded-[10px]
-            transition duration-300 ease-in-out"
-            >
+                relative flex flex-col px-5 py-5 md:px-7 md:py-6
+                bg-card rounded-xl
+                border border-asphalt hover:border-accent-orange/60
+                transition duration-200 ease-out
+            ">
+                <h2 className="font-mono-display text-accent-orange text-2xl md:text-3xl mb-3">{title}</h2>
 
-                {/* Project Title */}
-                <h1 className="py-2 md:py-3 w-full max-w-[280px] md:max-w-md text-center rounded-[10px] 
-                font-mono-display text-cream text-3xl md:text-4xl bg-asphalt"
-                >{title}
-                </h1>
-
-                {/* Project Logos */}
-                <div className="flex flex-row space-x-4 md:space-x-5 pt-3">
+                <div className="flex flex-row gap-4 mb-5">
                     {logos.map((Logo, index) => (
                         <Logo key={index} className={logoClass} />
                     ))}
                 </div>
 
-                {/* Project Description */}
-                <div className="py-6 md:py-8 px-2 md:px-4 flex-grow">
+                <ul className="flex flex-col gap-3">
                     {descriptions.map((desc, index) => (
-                        <div key={index}>
-                            <p className="font-urbanist font-[200] text-lg md:text-xl text-custom-gray py-3 md:py-4">
+                        <li key={index} className="flex gap-3 items-start">
+                            <span className="text-accent-orange mt-1 leading-none select-none">›</span>
+                            <p className="font-urbanist font-[200] text-base md:text-lg text-custom-gray leading-relaxed">
                                 {desc}
                             </p>
-                            <div className="h-0.5 w-[70%] bg-cream"/>
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
 
-                {/* Project Link */}
-                <a href={link} target="_blank" className="absolute bottom-4 right-4 md:bottom-5 md:right-5">
-                    <FaExternalLinkAlt className="w-8 h-auto md:w-10 text-cream hover:scale-120 hover:text-accent-orange transition duration-200 ease-in-out" />
+                <a href={link} target="_blank" className="mt-5 self-end">
+                    <FaExternalLinkAlt className="w-5 h-auto text-cream hover:text-accent-orange transition duration-200 ease-out" />
                 </a>
-
-            </div>   
+            </div>
         </div>
     )
 }
 
-function ProjectImage({scrollProgress, projectCount, projects}) {
 
+function ProjectImage({ scrollProgress, projectCount, projects }) {
     const [currentProgress, setCurrentProgress] = useState(0);
 
     useEffect(() => {
         const unsubscribe = scrollProgress.on("change", (latest) => {
             setCurrentProgress(latest);
         });
-        
         return () => unsubscribe();
     }, [scrollProgress]);
 
-    const media = Object.values(projects).map(project => project.media);
+    const media = Object.values(projects).map(p => p.media);
 
     const getOpacity = (index) => {
         const segmentSize = 1 / projectCount;
         const start = index * segmentSize;
         const end = (index + 1) * segmentSize;
-        
-        // Fade in when entering the segment, fade out when leaving
-        if (currentProgress >= start && currentProgress < end) {
-            return 1;
-        }
-        return 0;
+        return currentProgress >= start && currentProgress < end ? 1 : 0;
     };
 
     return (
-        <div className="py-10 px-20 top-0 sticky">
-            <div className="relative w-[800px] h-[600px] rounded-xl overflow-hidden">
-                {media.map((item,index) => (
+        <div className="py-10 px-10 top-10 sticky">
+            <div className="relative w-[560px] h-[420px] rounded-xl overflow-hidden bg-asphalt">
+                {media.map((item, index) => (
                     item.type === 'video' ? (
                         <video
                             key={index}
                             src={item.src}
                             autoPlay loop muted playsInline
-                            className="absolute max-w-full max-h-full object-cover transition-opacity duration-300 ease-in"
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-out"
                             style={{ opacity: getOpacity(index) }}
                         />
                     ) : (
                         <img
                             key={index}
                             src={item.src}
-                            className="absolute w-full h-full object-cover transition-opacity duration-300 ease-in"
+                            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-out"
                             style={{ opacity: getOpacity(index) }}
                             alt={`Project ${index + 1}`}
                         />

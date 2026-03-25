@@ -22,7 +22,7 @@ createRoot(document.getElementById('root')).render(
     <div id="top" className="h-0"/>
 
     <div className="p-5 sticky top-0">
-      <Logo className="w-10 h-10 hover:scale-120 transition duration-300 ease-in-out" onClick={() => scrollToSection("top")}/>
+      <Logo className="w-10 h-10 hover:opacity-70 transition duration-200 ease-out cursor-pointer" onClick={() => scrollToSection("top")}/>
     </div>
 
     <section>
