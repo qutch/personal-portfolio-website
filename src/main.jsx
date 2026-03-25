@@ -2,6 +2,7 @@ import './index.css'
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Analytics } from '@vercel/analytics/react'
 
 import { HeroSection } from './Hero'
 import { ProjectSection } from './ProjectSection'
@@ -47,5 +48,6 @@ createRoot(document.getElementById('root')).render(
       <Contact />
     </section>
 
+    <Analytics />
   </StrictMode>,
 )
