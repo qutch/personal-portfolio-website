@@ -1,7 +1,6 @@
 import { RiFirebaseFill } from "react-icons/ri";
 import { GrSwift } from "react-icons/gr";
-import { SiPython } from "react-icons/si";
-import { SiGodotengine } from "react-icons/si";
+import { SiPython, SiGodotengine, SiOpencv, SiFastapi, SiSwift, SiApple } from "react-icons/si";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { useRef, useState, useEffect } from "react";
@@ -9,6 +8,9 @@ import { motion, useScroll } from "framer-motion";
 
 import astroRaider from "./assets/astro_raider.jpg"
 import verletDemo from "./assets/verlet_demo.mp4"
+import repImprov from "./assets/rep_improv.jpg"
+import findlyDemo from "./assets/findly_demo.mp4"
+import claudePeek from "./assets/claudepeek.png"
 
 const fadeUp = {
     hidden: { opacity: 0, y: 24 },
@@ -23,7 +25,40 @@ export function ProjectSection() {
     });
 
     const projects = {
+        project0: {
+            title: "claudepeek",
+            logos: [SiSwift, SiApple],
+            descriptions: [
+                "Native macOS menu-bar and notch app giving real-time visibility into multiple concurrent Claude Code sessions.",
+                "Event-driven hook pipeline (Claude Code hooks → loopback HTTP server → session-state reducer) walks process trees to resolve session ownership across Terminal.app, iTerm2, and tmux, with ~0% idle CPU.",
+                "Interactive permission handling lets you Allow/Always/Deny tool calls right from the notch UI, backed by a persisted usage heatmap.",
+            ],
+            link: "https://github.com/qutch",
+            media: { type: 'image', src: claudePeek }
+        },
         project1: {
+            title: "rep improv",
+            logos: [SiPython, SiOpencv],
+            descriptions: [
+                "AI workout form coach built for the TwelveLabs x Voxel51 hackathon. Honorable mention.",
+                "Pegasus video-language model turns raw workout footage into structured coaching feedback.",
+                "OpenCV pose keypoints compared against reference poses to score form accuracy, surfaced as per-exercise FiftyOne labels.",
+            ],
+            link: "https://github.com/Hiro11411/RepImprov",
+            media: { type: 'image', src: repImprov }
+        },
+        project2: {
+            title: "findly",
+            logos: [SiSwift, SiPython, SiFastapi],
+            descriptions: [
+                "Native macOS app for searching your files in plain language. Fully local, no API calls, no cloud.",
+                "On-device vector search with LanceDB and Ollama embeddings, SwiftUI frontend over a local FastAPI service.",
+                "Background indexing pipeline with SQLite metadata, plus a global shortcut for Spotlight-style quick search.",
+            ],
+            link: "https://github.com/qutch/findly",
+            media: { type: 'video', src: findlyDemo }
+        },
+        project3: {
             title: "astro raiders",
             logos: [SiGodotengine],
             descriptions: [
@@ -34,7 +69,7 @@ export function ProjectSection() {
             link: "https://htquartz.itch.io/astro-raider",
             media: { type: 'image', src: astroRaider }
         },
-        project2: {
+        project4: {
             title: "verlet integration",
             logos: [SiPython],
             descriptions: [
