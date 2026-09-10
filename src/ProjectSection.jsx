@@ -30,7 +30,6 @@ export function ProjectSection() {
             logos: [SiSwift, SiApple],
             descriptions: [
                 "Native macOS menu-bar and notch app giving real-time visibility into multiple concurrent Claude Code sessions.",
-                "Event-driven hook pipeline (Claude Code hooks → loopback HTTP server → session-state reducer) walks process trees to resolve session ownership across Terminal.app, iTerm2, and tmux, with ~0% idle CPU.",
                 "Interactive permission handling lets you Allow/Always/Deny tool calls right from the notch UI, backed by a persisted usage heatmap.",
             ],
             link: "https://github.com/qutch",
