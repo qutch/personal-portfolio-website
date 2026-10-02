@@ -21,7 +21,7 @@ export function AboutMe() {
             </motion.div>
 
             {/* Content */}
-            <div className="px-6 py-10 md:px-12 md:py-14 lg:px-20 lg:py-16 flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
+            <div className="px-6 py-10 md:px-12 md:py-14 lg:px-20 lg:py-16 flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16">
 
                 {/* Profile Image */}
                 <motion.div
@@ -52,11 +52,16 @@ export function AboutMe() {
                     </Section>
 
                     <Section label="// interests">
-                        I enjoy developing games and mobile applications, or just generally bringing my ideas to life. I also have a strong interest in AI and Robotics, specifically how they can be integrated into society and become a part of our daily lives.
+                        I enjoy developing games, mobile applications, or just generally bringing my ideas to life.
+                        I also have a strong interest in AI, Robotics, and Graphics, specifically how they can be integrated into society and become a part of our daily lives.
+                        I have recently become interested in how robotics and AI can be woven together to create autonomous robots that can complete everyday tasks that we do and even interact with us.
+                        
                     </Section>
 
                     <Section label="// beyond tech">
-                        I love photography and music, especially artists like Daniel Caesar and RADWIMPS. I need to stay active, whether that's running, rock climbing, or hiking. My favorite hike so far has been the Hardergrat trail in Interlaken, Switzerland.
+                        I love photography and music, especially artists like Daniel Caesar and RADWIMPS.
+                        I need to stay active, whether that's running, rock climbing, or hiking.
+                        My favorite hike so far has been the Hardergrat trail in Interlaken, Switzerland.
                     </Section>
                 </motion.div>
             </div>
