@@ -1,6 +1,6 @@
 import { RiFirebaseFill } from "react-icons/ri";
 import { GrSwift } from "react-icons/gr";
-import { SiPython, SiGodotengine, SiFastapi, SiSwift, SiApple } from "react-icons/si";
+import { SiPython, SiGodotengine, SiFastapi, SiSwift, SiApple, SiElectron } from "react-icons/si";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { useRef, useState, useEffect } from "react";
@@ -46,11 +46,11 @@ export function ProjectSection() {
         },
         project2: {
             title: "findly",
-            logos: [SiSwift, SiPython, SiFastapi],
+            logos: [SiElectron, SiPython, SiFastapi],
             descriptions: [
-                "Native macOS app for searching your files in plain language. Fully local, no API calls, no cloud.",
-                "On-device vector search with LanceDB and Ollama embeddings, SwiftUI frontend over a local FastAPI service.",
-                "Background indexing pipeline with SQLite metadata, plus a global shortcut for Spotlight-style quick search.",
+                "Desktop app for searching your files in plain language, with a global shortcut for Spotlight-style quick search.",
+                "Semantic search over a Pinecone vector index, with an Electron + React frontend talking to a Python FastAPI service.",
+                "File watcher indexes PDFs, docs, slides, and images (OCR) in the background, then Gemini re-ranks and summarizes results.",
             ],
             link: "https://github.com/qutch/findly",
             media: { type: 'video', src: findlyDemo }
