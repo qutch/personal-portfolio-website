@@ -1,6 +1,6 @@
 import { RiFirebaseFill } from "react-icons/ri";
 import { GrSwift } from "react-icons/gr";
-import { SiPython, SiGodotengine, SiOpencv, SiFastapi, SiSwift, SiApple } from "react-icons/si";
+import { SiPython, SiGodotengine, SiFastapi, SiSwift, SiApple } from "react-icons/si";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { useRef, useState, useEffect } from "react";
@@ -36,11 +36,10 @@ export function ProjectSection() {
         },
         project1: {
             title: "rep improv",
-            logos: [SiPython, SiOpencv],
+            logos: [SiPython],
             descriptions: [
                 "AI workout form coach built for the TwelveLabs x Voxel51 hackathon. Honorable mention.",
                 "Pegasus video-language model turns raw workout footage into structured coaching feedback.",
-                "OpenCV pose keypoints compared against reference poses to score form accuracy, surfaced as per-exercise FiftyOne labels.",
             ],
             link: "https://github.com/Hiro11411/RepImprov",
             media: { type: 'image', src: repImprov }
