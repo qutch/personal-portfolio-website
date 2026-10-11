@@ -4,7 +4,7 @@ import { SiPython, SiGodotengine, SiOpencv, SiFastapi, SiSwift, SiApple } from "
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll } from "framer-motion";
+import { motion } from "framer-motion";
 
 import astroRaider from "./assets/astro_raider.jpg"
 import verletDemo from "./assets/verlet_demo.mp4"
@@ -12,17 +12,16 @@ import repImprov from "./assets/rep_improv.jpg"
 import findlyDemo from "./assets/findly_demo.mp4"
 import claudePeek from "./assets/claudepeek.png"
 
+const MEDIA_HEIGHT = 420;
+
 const fadeUp = {
     hidden: { opacity: 0, y: 24 },
     show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
 }
 
 export function ProjectSection() {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start 0.6", "end start"],
-    });
+    const columnRef = useRef(null);
+    const cardRefs = useRef([]);
 
     const projects = {
         project0: {
@@ -80,21 +79,50 @@ export function ProjectSection() {
         },
     }
 
-    const projectCount = Object.keys(projects).length;
-
     const [activeIndex, setActiveIndex] = useState(0);
+    const [mediaOffset, setMediaOffset] = useState(0);
 
+    // Active project = card whose center is closest to the middle of the viewport.
+    // At the bottom of the page the last card always wins, since it may never reach the middle.
     useEffect(() => {
-        const segmentSize = 1 / projectCount;
-        const unsubscribe = scrollYProgress.on("change", (latest) => {
-            const index = Math.min(
-                Math.floor(latest / segmentSize),
-                projectCount - 1
-            );
+        const update = () => {
+            const cards = cardRefs.current.filter(Boolean);
+            if (!cards.length) return;
+
+            const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+            let index = cards.length - 1;
+            if (!atBottom) {
+                const viewportCenter = window.innerHeight / 2;
+                let bestDistance = Infinity;
+                cards.forEach((card, i) => {
+                    const rect = card.getBoundingClientRect();
+                    const distance = Math.abs(rect.top + rect.height / 2 - viewportCenter);
+                    if (distance < bestDistance) {
+                        bestDistance = distance;
+                        index = i;
+                    }
+                });
+            }
             setActiveIndex(index);
-        });
-        return () => unsubscribe();
-    }, [scrollYProgress, projectCount]);
+
+            // Line the media's center up with the active card's center, kept within the column
+            const column = columnRef.current;
+            if (column) {
+                const card = cards[index];
+                const cardCenter = card.offsetTop + card.offsetHeight / 2;
+                const maxOffset = Math.max(column.offsetHeight - MEDIA_HEIGHT, 0);
+                setMediaOffset(Math.min(Math.max(cardCenter - MEDIA_HEIGHT / 2, 0), maxOffset));
+            }
+        };
+
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+        window.addEventListener("resize", update);
+        return () => {
+            window.removeEventListener("scroll", update);
+            window.removeEventListener("resize", update);
+        };
+    }, []);
 
     return (
         <div>
@@ -110,11 +138,12 @@ export function ProjectSection() {
             </motion.div>
 
             {/* Desktop Layout */}
-            <div ref={ref} className="hidden lg:flex flex-row justify-around py-10 gap-6">
-                <div className="flex flex-col gap-8 py-4">
+            <div className="hidden lg:flex flex-row justify-around py-10 gap-6">
+                <div ref={columnRef} className="relative flex flex-col gap-8 py-4">
                     {Object.entries(projects).map(([key, project], i) => (
                         <motion.div
                             key={key}
+                            ref={(el) => (cardRefs.current[i] = el)}
                             variants={fadeUp}
                             initial="hidden"
                             whileInView="show"
@@ -131,8 +160,8 @@ export function ProjectSection() {
                         </motion.div>
                     ))}
                 </div>
-                <div>
-                    <ProjectImage scrollProgress={scrollYProgress} projectCount={projectCount} projects={projects} />
+                <div className="relative w-[560px]">
+                    <ProjectImage activeIndex={activeIndex} offset={mediaOffset} projects={projects} />
                 </div>
             </div>
 
@@ -252,28 +281,17 @@ function ProjectCardWithMedia({ title, logos, descriptions, link, media }) {
 }
 
 
-function ProjectImage({ scrollProgress, projectCount, projects }) {
-    const [currentProgress, setCurrentProgress] = useState(0);
-
-    useEffect(() => {
-        const unsubscribe = scrollProgress.on("change", (latest) => {
-            setCurrentProgress(latest);
-        });
-        return () => unsubscribe();
-    }, [scrollProgress]);
-
+function ProjectImage({ activeIndex, offset, projects }) {
     const media = Object.values(projects).map(p => p.media);
 
-    const getOpacity = (index) => {
-        const segmentSize = 1 / projectCount;
-        const start = index * segmentSize;
-        const end = (index + 1) * segmentSize;
-        return currentProgress >= start && currentProgress < end ? 1 : 0;
-    };
-
     return (
-        <div className="py-10 px-10 top-10 sticky">
-            <div className="relative w-[560px] h-[420px] rounded-xl overflow-hidden bg-asphalt">
+        <motion.div
+            className="absolute top-0 left-0"
+            initial={false}
+            animate={{ y: offset }}
+            transition={{ type: "spring", stiffness: 120, damping: 22 }}
+        >
+            <div className="relative w-[560px] rounded-xl overflow-hidden bg-asphalt" style={{ height: MEDIA_HEIGHT }}>
                 {media.map((item, index) => (
                     item.type === 'video' ? (
                         <video
@@ -281,19 +299,19 @@ function ProjectImage({ scrollProgress, projectCount, projects }) {
                             src={item.src}
                             autoPlay loop muted playsInline
                             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-out"
-                            style={{ opacity: getOpacity(index) }}
+                            style={{ opacity: index === activeIndex ? 1 : 0 }}
                         />
                     ) : (
                         <img
                             key={index}
                             src={item.src}
                             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-400 ease-out"
-                            style={{ opacity: getOpacity(index) }}
+                            style={{ opacity: index === activeIndex ? 1 : 0 }}
                             alt={`Project ${index + 1}`}
                         />
                     )
                 ))}
             </div>
-        </div>
+        </motion.div>
     )
 }
